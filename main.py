@@ -33,34 +33,48 @@ class Window(QDialog):
         # initializing the buttons layout
         self.buttonsLayout = QHBoxLayout()
 
-        # image field
-        Pixmap = QPixmap('img/Mona_Lisa.jpg')
-        Pixmap = Pixmap.scaled(IMG_SIZE, IMG_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
-        self.imageField = QLabel("Image")
-        self.imageField.setPixmap(Pixmap)
-        self.mainLayout.addWidget(self.imageField)
+        # image field 1
+        self.Pixmap1 = QPixmap('img/Mona_Lisa.jpg')
+        self.Pixmap1 = self.Pixmap1.scaled(IMG_SIZE, IMG_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
+        self.imageField1 = QLabel("Image")
+        self.imageField1.setPixmap(self.Pixmap1)
+        self.imagesLayout.addWidget(self.imageField1)
+
+        # image field 2
+        self.Pixmap2 = QPixmap('img/Mona_Lisa.jpg')
+        self.Pixmap2 = self.Pixmap2.scaled(IMG_SIZE, IMG_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
+        self.imageField2 = QLabel("Image")
+        self.imageField2.setPixmap(self.Pixmap2)
+        self.imagesLayout.addWidget(self.imageField2)
 
         # upload image buttons
         self.btn1 = QPushButton("Browse image 1")
         self.buttonsLayout.addWidget(self.btn1)
-        self.btn1.clicked.connect(self.browseImage)
+        self.btn1.clicked.connect(lambda: self.browseImage(1))
 
         self.btn2 = QPushButton("Browse image 2")
         self.buttonsLayout.addWidget(self.btn2)
-        self.btn2.clicked.connect(self.browseImage)
+        self.btn2.clicked.connect(lambda: self.browseImage(2))
 
         # setting mainLayout as a default layout
         self.setLayout(self.mainLayout)
+        self.mainLayout.addLayout(self.imagesLayout)
         self.mainLayout.addLayout(self.buttonsLayout)
 
     # defining the browseImage mathod
     def browseImage(self, buttonID):
         fname = QFileDialog.getOpenFileName(self, 'Open File', 'c\\', 'Image files (*.jpg *.png)')
         imagePath = fname[0]
-        Pixmap = QPixmap(imagePath)
-        Pixmap = Pixmap.scaled(IMG_SIZE, IMG_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
-        self.imageField.setPixmap(QPixmap(Pixmap))
-
+        if buttonID == 1:
+            Pixmap = QPixmap(imagePath)
+            Pixmap = Pixmap.scaled(IMG_SIZE, IMG_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
+            self.imageField1.setPixmap(QPixmap(Pixmap))
+        elif buttonID == 2:
+            Pixmap = QPixmap(imagePath)
+            Pixmap = Pixmap.scaled(IMG_SIZE, IMG_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
+            self.imageField2.setPixmap(QPixmap(Pixmap))
+        else:
+            exit(0)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
