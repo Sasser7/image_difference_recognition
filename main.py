@@ -35,14 +35,14 @@ class Window(QDialog):
         self.buttonsLayout = QHBoxLayout()
 
         # image field 1
-        self.Pixmap1 = QPixmap('img/Mona_Lisa.jpg')
+        self.Pixmap1 = QPixmap('img/1.jpg')
         self.Pixmap1 = self.Pixmap1.scaled(IMG_SIZE, IMG_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
         self.imageField1 = QLabel("Image")
         self.imageField1.setPixmap(self.Pixmap1)
         self.imagesLayout.addWidget(self.imageField1)
 
         # image field 2
-        self.Pixmap2 = QPixmap('img/Mona_Lisa_mod.png')
+        self.Pixmap2 = QPixmap('img/2.jpg')
         self.Pixmap2 = self.Pixmap2.scaled(IMG_SIZE, IMG_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
         self.imageField2 = QLabel("Image")
         self.imageField2.setPixmap(self.Pixmap2)
@@ -69,7 +69,7 @@ class Window(QDialog):
 
     # defining the browseImage mathod
     def browseImage(self, buttonID):
-        fname = QFileDialog.getOpenFileName(self, 'Open File', 'c\\', 'Image files (*.jpg *.png)')
+        fname = QFileDialog.getOpenFileName(self, 'Open File', 'c\\', 'Image files (*.jpg)')
         imagePath = fname[0]
         Pixmap = QPixmap(imagePath)
         if buttonID == 1:
@@ -82,8 +82,8 @@ class Window(QDialog):
             exit(0)
 
     def showDifferences(self):
-        path = r'img/Mona_Lisa.jpg'
-        path_mod = r'img/Mona_Lisa_mod.png'
+        path = r'img/1.jpg'
+        path_mod = r'img/2.jpg'
 
         # Using cv2.imread() method
         img = cv.imread(path)
@@ -99,7 +99,6 @@ class Window(QDialog):
         # images, ensuring that the difference image is returned
         (score, diff) = compare_ssim(img_gray, img_mod_gray, full=True)
         diff = (diff * 255).astype("uint8")
-        print("SSIM: {}".format(score))
 
         # threshold the difference image, followed by finding contours to
         # obtain the regions of the two input images that differ
