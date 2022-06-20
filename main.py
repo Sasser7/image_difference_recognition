@@ -93,12 +93,14 @@ class Window(QDialog):
         img = cv.imread(path, 0)
         img = cv.resize(img, (img.shape[1] // 10, img.shape[0] // 10), interpolation = cv.INTER_AREA)
 
-        img_mod = cv.imread(path_mod, 0)
+        img_mod = cv.imread(path_mod)
         img_mod = cv.resize(img_mod, (img_mod.shape[1] // 10, img_mod.shape[0] // 10), interpolation=cv.INTER_AREA)
+
+        img_mod_gray = cv.cvtColor(img_mod, cv.COLOR_BGR2GRAY)
 
         # compute the Structural Similarity Index (SSIM) between the two
         # images, ensuring that the difference image is returned
-        (score, diff) = compare_ssim(img, img_mod, full=True)
+        (score, diff) = compare_ssim(img, img_mod_gray, full=True)
         diff = (diff * 255).astype("uint8")
         print("SSIM: {}".format(score))
 
