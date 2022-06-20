@@ -1,5 +1,8 @@
 import sys
 import cv2 as cv
+from skimage.metrics import structural_similarity as compare_ssim
+import argparse
+import imutils
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import (
@@ -93,17 +96,30 @@ class Window(QDialog):
         img_mod = cv.imread(path_mod, 0)
         img_mod = cv.resize(img_mod, (img_mod.shape[1] // 10, img_mod.shape[0] // 10), interpolation=cv.INTER_AREA)
 
-        # Tresholding images
-        threshold, thresh = cv.threshold(img.copy(), 150, 255, cv.THRESH_BINARY)
-        threshold_mod, thresh_mod = cv.threshold(img_mod.copy(), 150, 255, cv.THRESH_BINARY)
+        # compute the Structural Similarity Index (SSIM) between the two
+        # images, ensuring that the difference image is returned
+        (score, diff) = compare_ssim(img, img_mod, full=True)
+        diff = (diff * 255).astype("uint8")
+        print("SSIM: {}".format(score))
 
-        # Detecting Differences using bitwise xor operator
-        diff = cv.bitwise_xor(thresh_mod, thresh)
+        # threshold the difference image, followed by finding contours to
+        # obtain the regions of the two input images that differ
+        thresh = cv.threshold(diff, 0, 255,
+                               cv.THRESH_BINARY_INV | cv.THRESH_OTSU)[1]
+        cnts = cv.findContours(thresh.copy(), cv.RETR_EXTERNAL,
+                                cv.CHAIN_APPROX_SIMPLE)
+        cnts = imutils.grab_contours(cnts)
 
-        # Displaying the image
-        cv.imshow('image', thresh)
-        cv.imshow('image_mod', thresh_mod)
-        cv.imshow('diff', diff)
+        # loop over the contours
+        for c in cnts:
+            # compute the bounding box of the contour and then draw the
+            # bounding box on both input images to represent where the two
+            # images differ
+            (x, y, w, h) = cv.boundingRect(c)
+            cv.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
+            cv.rectangle(img_mod, (x, y), (x + w, y + h), (0, 0, 255), 2)
+        # show the output images
+        cv.imshow("Modified", img_mod)
 
 
 if __name__ == "__main__":
