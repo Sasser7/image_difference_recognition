@@ -29,6 +29,7 @@ class Window(QDialog):
 
         # initializing the images layout
         self.imagesLayout = QHBoxLayout()
+        self.imagesLayout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # initializing the buttons layout
         self.buttonsLayout = QHBoxLayout()
@@ -61,16 +62,19 @@ class Window(QDialog):
         self.mainLayout.addLayout(self.imagesLayout)
         self.mainLayout.addLayout(self.buttonsLayout)
 
+        # adding the submit button
+        self.subbtn = QPushButton("Show Differences")
+        self.mainLayout.addWidget(self.subbtn)
+
     # defining the browseImage mathod
     def browseImage(self, buttonID):
         fname = QFileDialog.getOpenFileName(self, 'Open File', 'c\\', 'Image files (*.jpg *.png)')
         imagePath = fname[0]
+        Pixmap = QPixmap(imagePath)
         if buttonID == 1:
-            Pixmap = QPixmap(imagePath)
             Pixmap = Pixmap.scaled(IMG_SIZE, IMG_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
             self.imageField1.setPixmap(QPixmap(Pixmap))
         elif buttonID == 2:
-            Pixmap = QPixmap(imagePath)
             Pixmap = Pixmap.scaled(IMG_SIZE, IMG_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
             self.imageField2.setPixmap(QPixmap(Pixmap))
         else:
