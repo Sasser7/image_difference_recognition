@@ -1,7 +1,6 @@
 import sys
 import cv2 as cv
 from skimage.metrics import structural_similarity as compare_ssim
-import argparse
 import imutils
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
@@ -87,17 +86,18 @@ class Window(QDialog):
         path_mod = r'img/Mona_Lisa_mod.png'
 
         # Using cv2.imread() method
-        img = cv.imread(path, 0)
-        img = cv.resize(img, (img.shape[1] // 10, img.shape[0] // 10), interpolation = cv.INTER_AREA)
+        img = cv.imread(path)
+        img = cv.resize(img, (img.shape[1] // 10, img.shape[0] // 10), interpolation=cv.INTER_AREA)
 
         img_mod = cv.imread(path_mod)
         img_mod = cv.resize(img_mod, (img_mod.shape[1] // 10, img_mod.shape[0] // 10), interpolation=cv.INTER_AREA)
 
+        img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         img_mod_gray = cv.cvtColor(img_mod, cv.COLOR_BGR2GRAY)
 
         # compute the Structural Similarity Index (SSIM) between the two
         # images, ensuring that the difference image is returned
-        (score, diff) = compare_ssim(img, img_mod_gray, full=True)
+        (score, diff) = compare_ssim(img_gray, img_mod_gray, full=True)
         diff = (diff * 255).astype("uint8")
         print("SSIM: {}".format(score))
 
@@ -113,7 +113,6 @@ class Window(QDialog):
             # bounding box on both input images to represent where the two
             # images differ
             (x, y, w, h) = cv.boundingRect(c)
-            cv.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
             cv.rectangle(img_mod, (x, y), (x + w, y + h), (0, 0, 255), 2)
         # show the output images
         cv.imshow("Here you are", img_mod)
