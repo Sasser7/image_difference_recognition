@@ -1,4 +1,5 @@
 import sys
+import cv2 as cv
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import (
@@ -42,7 +43,7 @@ class Window(QDialog):
         self.imagesLayout.addWidget(self.imageField1)
 
         # image field 2
-        self.Pixmap2 = QPixmap('img/Mona_Lisa.jpg')
+        self.Pixmap2 = QPixmap('img/Mona_Lisa_mod.png')
         self.Pixmap2 = self.Pixmap2.scaled(IMG_SIZE, IMG_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
         self.imageField2 = QLabel("Image")
         self.imageField2.setPixmap(self.Pixmap2)
@@ -64,6 +65,7 @@ class Window(QDialog):
 
         # adding the submit button
         self.subbtn = QPushButton("Show Differences")
+        self.subbtn.clicked.connect(self.showDifferences)
         self.mainLayout.addWidget(self.subbtn)
 
     # defining the browseImage mathod
@@ -79,6 +81,16 @@ class Window(QDialog):
             self.imageField2.setPixmap(QPixmap(Pixmap))
         else:
             exit(0)
+
+    def showDifferences(self):
+        path = r'img/Mona_Lisa.jpg'
+
+        # Using cv2.imread() method
+        img = cv.imread(path, 0)
+
+        # Displaying the image
+        cv.imshow('image', img)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
