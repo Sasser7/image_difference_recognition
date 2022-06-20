@@ -84,12 +84,26 @@ class Window(QDialog):
 
     def showDifferences(self):
         path = r'img/Mona_Lisa.jpg'
+        path_mod = r'img/Mona_Lisa_mod.png'
 
         # Using cv2.imread() method
         img = cv.imread(path, 0)
+        img = cv.resize(img, (img.shape[1] // 10, img.shape[0] // 10), interpolation = cv.INTER_AREA)
+
+        img_mod = cv.imread(path_mod, 0)
+        img_mod = cv.resize(img_mod, (img_mod.shape[1] // 10, img_mod.shape[0] // 10), interpolation=cv.INTER_AREA)
+
+        # Tresholding images
+        threshold, thresh = cv.threshold(img.copy(), 150, 255, cv.THRESH_BINARY)
+        threshold_mod, thresh_mod = cv.threshold(img_mod.copy(), 150, 255, cv.THRESH_BINARY)
+
+        # Detecting Differences using bitwise operator
+        diff = cv.bitwise_xor(thresh_mod, thresh)
 
         # Displaying the image
-        cv.imshow('image', img)
+        cv.imshow('image', thresh)
+        cv.imshow('image_mod', thresh_mod)
+        cv.imshow('diff', diff)
 
 
 if __name__ == "__main__":
