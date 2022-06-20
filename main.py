@@ -97,7 +97,7 @@ class Window(QDialog):
         threshold, thresh = cv.threshold(img.copy(), 150, 255, cv.THRESH_BINARY)
         threshold_mod, thresh_mod = cv.threshold(img_mod.copy(), 150, 255, cv.THRESH_BINARY)
 
-        # Detecting Differences using bitwise operator
+        # Detecting Differences using bitwise xor operator
         diff = cv.bitwise_xor(thresh_mod, thresh)
 
         # Displaying the image
