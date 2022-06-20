@@ -7,13 +7,10 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import (
     QApplication,
-    QWidget,
     QVBoxLayout,
     QPushButton,
     QHBoxLayout,
     QLabel,
-    QListWidget,
-    QLineEdit,
     QDialog,
     QFileDialog
 )
