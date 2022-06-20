@@ -75,9 +75,11 @@ class Window(QDialog):
         if buttonID == 1:
             Pixmap = Pixmap.scaled(IMG_SIZE, IMG_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
             self.imageField1.setPixmap(QPixmap(Pixmap))
+            Pixmap.save("img/1.jpg")
         elif buttonID == 2:
             Pixmap = Pixmap.scaled(IMG_SIZE, IMG_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
             self.imageField2.setPixmap(QPixmap(Pixmap))
+            Pixmap.save("img/2.jpg")
         else:
             exit(0)
 
@@ -87,10 +89,10 @@ class Window(QDialog):
 
         # Using cv2.imread() method
         img = cv.imread(path)
-        img = cv.resize(img, (img.shape[1] // 10, img.shape[0] // 10), interpolation=cv.INTER_AREA)
+        #img = cv.resize(img, (img.shape[1] // 10, img.shape[0] // 10), interpolation=cv.INTER_AREA)
 
         img_mod = cv.imread(path_mod)
-        img_mod = cv.resize(img_mod, (img_mod.shape[1] // 10, img_mod.shape[0] // 10), interpolation=cv.INTER_AREA)
+        #img_mod = cv.resize(img_mod, (img_mod.shape[1] // 10, img_mod.shape[0] // 10), interpolation=cv.INTER_AREA)
 
         img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         img_mod_gray = cv.cvtColor(img_mod, cv.COLOR_BGR2GRAY)
