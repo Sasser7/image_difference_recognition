@@ -67,7 +67,7 @@ class Window(QDialog):
         self.subbtn.clicked.connect(self.showDifferences)
         self.mainLayout.addWidget(self.subbtn)
 
-    # defining the browseImage mathod
+    # defining the browseImage method
     def browseImage(self, buttonID):
         fname = QFileDialog.getOpenFileName(self, 'Open File', 'c\\', 'Image files (*.jpg)')
         imagePath = fname[0]
